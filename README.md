@@ -87,3 +87,17 @@ Untuk menguji endpoint secara manual, gunakan koleksi Postman di `docs/api/postm
 ## Catatan pembuatan
 
 aplikasi dibuat menggunakan claude code dengan model haiku 5.5
+
+## Batasan aplikasi
+
+| Aspek | Batasan |
+|---|---|
+| Rate limit umum (`throttle:api`) | 60 request per menit, per pengguna yang login (atau per IP jika belum login). Melebihi batas menghasilkan HTTP 429 `TOO_MANY_REQUESTS`. |
+| Login per email dan IP (`throttle:login`) | 5 percobaan per menit untuk pasangan email dan IP. |
+| Login per IP (`throttle:login-ip`) | 20 percobaan per menit untuk satu IP. |
+| Masa berlaku token | 24 jam sejak login. |
+| Pagination (`per_page`) | Default 10, maksimal 100 per halaman. |
+| Panjang password | Minimal 8 karakter saat membuat atau mereset akun, maksimal 255 karakter. |
+| Peran admin | Hanya admin yang boleh membuat, mengubah, atau menonaktifkan pengguna dan membuat akun pegawai. Operator yang mencoba melakukannya menerima HTTP 403 `FORBIDDEN`. |
+
+Saat menjalankan koleksi Postman dengan Newman, tambahkan jeda antar request (misalnya `--delay-request 1500`) agar tidak mencapai batas 60 request per menit.
